@@ -1,0 +1,2 @@
+# Limitations
+Lexical features only; no page content, WHOIS age, DNS or reputation. The scanner cannot identify malicious content hosted on a compromised legitimate site or reliably reveal a shortened link's destination. Synthetic sample data; real performance depends on your dataset and may degrade on new attack styles. Heuristic weights are hand-set. Probabilities are estimates, not guarantees; a low score is not a safety guarantee.

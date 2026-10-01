@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}<section class="panel"><h2>MODEL INSIGHTS</h2>
+{% if not m %}<div class="alert warn">No metrics yet. Run the training notebook or <code>python train.py</code>.</div>{% else %}
+<p>Best model: <b>{{ m.best_model }}</b> · train {{ m.n_train }} / validation {{ m.n_validation|default('unknown') }} / test {{ m.n_test }} URLs.</p>
+{% if m.validation_results is defined %}<p>Models were selected by validation F1. Metrics below are from the held-out test split.</p>{% else %}<div class="alert warn">These metrics predate validation-based model selection. Run <code>python train.py</code> to refresh them.</div>{% endif %}
+<table><tr><th>Model</th>{% if m.validation_results is defined %}<th>Validation F1</th>{% endif %}<th>Test accuracy</th><th>Test precision</th><th>Test recall</th><th>Test F1</th><th>Test FPR</th><th>Test FNR</th></tr>
+{% for n,x in m.results.items() %}<tr><td>{{ n }}</td>{% if m.validation_results is defined %}<td>{{ '%.3f'|format(m.validation_results[n]['f1']) }}</td>{% endif %}{% for k in ['accuracy','precision','recall','f1','fpr','fnr'] %}<td>{{ '%.3f'|format(x[k]) }}</td>{% endfor %}</tr>{% endfor %}</table>
+<h3>Feature importance (Random Forest)</h3>{% set mx = m.feature_importance.values()|max %}{% for k,v in (m.feature_importance.items()|list)[:12] %}<div class="bar"><span>{{ k }}</span><i class="info" style="width:{{ (v/mx*100)|round }}%"></i><em>{{ '%.3f'|format(v) }}</em></div>{% endfor %}{% endif %}</section>{% endblock %}
